@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ErrorResponse } from '../interfaces/error.interface';
+import { IErrorResponse } from '../interfaces/error.interface';
 import { NotificationService } from "./notification.service";
 
 @Injectable({
@@ -8,7 +8,7 @@ import { NotificationService } from "./notification.service";
 })
 export class ErrorService {
 
-    private errorResponse: ErrorResponse = null;
+    private errorResponse: IErrorResponse = null;
     private errorHttpResponse: HttpErrorResponse = null;
 
     constructor(

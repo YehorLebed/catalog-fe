@@ -1,39 +1,39 @@
 /**
- * User role interface
+ * IUser role interface
  */
-export interface Role {
+export interface IRole {
     id: number;
     name: string;
 }
 
 /**
- * User interface
+ * IUser interface
  */
-export interface User {
+export interface IUser {
     id: number;
     email: string;
-    role: Role;
+    role: IRole;
 }
 
 /**
- * AuthData interface is used to send user data 
+ * IAuthData interface is used to send user data
  * for authentication or registration
  */
-export interface AuthData {
+export interface IAuthData {
     email: string;
     password: string;
 }
 
 /**
- * RegistrationResponse interface is used for registration response
+ * IRegistrationResponse interface is used for registration response
  */
-export interface RegistrationResponse {
+export interface IRegistrationResponse {
     id: number;
     email: string;
 }
 
 /**
- * LoginResponse interface 
+ * LoginResponse interface
  */
 export interface LoginResponse {
     token: string;

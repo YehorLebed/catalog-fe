@@ -1,0 +1,24 @@
+<div class="category dropdown">
+    <button class="btn btn-secondary dropdown-toggle" (click)="handleClick()">
+        <a class="category-link dropdown-link" href="#">{{category.title}}</a>
+    </button>
+
+    <!--  dropdown context  -->
+    <div class="dropdown-menu" [class.show]="show">
+
+        <!--  fetched subcategories  -->
+        <ng-template [ngIf]="isShouldRenderSubcategories()">
+            <div class="dropdown-item" *ngFor="let category of subCategories">
+                <app-category [category]="category"></app-category>
+            </div>
+        </ng-template>
+
+        <!--  no subcategories exists  -->
+        <div *ngIf="isShouldRenderNoSubcategoriesExists()" class="dropdown-item">
+            No subcategories exists
+        </div>
+
+        <!--  loading  -->
+        <app-loader *ngIf="loading"></app-loader>
+    </div>
+</div>

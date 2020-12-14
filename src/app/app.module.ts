@@ -13,7 +13,12 @@ import {AppComponent} from './app.component';
 import {ShoppingCartIconComponent} from './components/shopping-cart-icon.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductListItemComponent } from './components/product-list-item/product-list-item.component';
-import { ProductPageComponent } from './pages/product-page/product-page.component';
+import { ProductCategoryPage } from './pages/product-category-page/product-category-page';
+import { ProductDetailPage } from './pages/product-detail-page/product-detail-page';
+import { MainPageComponent } from './pages/main-page/main-page.component';
+import { DropdownComponent } from './common/dropdown/dropdown.component';
+import { CategoryComponent } from './components/category/category.component';
+import {LoaderComponent} from './components/loader.component';
 
 
 @NgModule({
@@ -27,7 +32,12 @@ import { ProductPageComponent } from './pages/product-page/product-page.componen
         ShoppingCartIconComponent,
         ProductListComponent,
         ProductListItemComponent,
-        ProductPageComponent
+        ProductCategoryPage,
+        ProductDetailPage,
+        MainPageComponent,
+        DropdownComponent,
+        CategoryComponent,
+        LoaderComponent
     ],
     imports: [
         BrowserModule,

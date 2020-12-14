@@ -1,18 +1,18 @@
-import {Category} from './category.interface';
+import {ICategory} from './category.interface';
 
-export interface ProductImage {
+export interface IProductImage {
     small: string;
     medium: string;
     original: string;
 };
 
-export interface Product {
+export interface IProduct {
     id?: number;
     price: number;
     title: string;
     isPromo: boolean;
     createdAt: number
     description: string;
-    category: Category;
-    image: ProductImage;
+    category: ICategory;
+    image: IProductImage;
 };

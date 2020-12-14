@@ -1,5 +1,9 @@
-export interface Category {
+export interface ICategory {
     id?: number;
     title: string;
-    parent: Category;
+    parent: ICategory;
 };
+
+export interface CategoriesResponse {
+    categories: ICategory[];
+}

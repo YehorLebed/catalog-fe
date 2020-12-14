@@ -1,0 +1,38 @@
+.product {
+    color: #444;
+
+    padding: 0 2rem;
+
+    &-promo {
+        width: 100%;
+    }
+
+    &-container {
+        padding: 3rem 0;
+    }
+
+    &__title {
+        margin-bottom: 20px;
+    }
+
+    &__price {
+        width: fit-content;
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 1rem 1.5rem;
+        color: #fff;
+        background-color: var(--primary);
+        margin-bottom: 15px;
+    }
+
+    &__image {
+        padding-right: 2rem;
+    }
+
+    & .btn {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+}

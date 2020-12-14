@@ -1,0 +1,10 @@
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" (click)="toggleShow()">
+        <a class="dropdown-link" href="#">{{title}}</a>
+    </button>
+    <ul class="dropdown-menu" [class.show]="show">
+        <li class="dropdown-item" *ngFor="let item of items">
+            <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item  }"></ng-container>
+        </li>
+    </ul>
+</div>

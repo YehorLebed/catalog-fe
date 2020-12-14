@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Notification } from '../../interfaces/notification.interface'
+import { INotification } from '../../interfaces/notification.interface'
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
     };
 
     // options
-    public notification: Notification = null;
+    public notification: INotification = null;
     private isActive = false;
 
     // subscriptions
@@ -29,10 +29,10 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
     /**
      * show message and hide it after timeout
-     * @param {Notification} notification notification message and type
+     * @param {INotification} notification notification message and type
      * @return {void}
      */
-    notify(notification: Notification): void {
+    notify(notification: INotification): void {
         if (this.timeoutSubscription) {
             clearTimeout(this.timeoutSubscription);
         }

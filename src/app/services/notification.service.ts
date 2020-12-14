@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Notification } from '../interfaces/notification.interface';
+import { INotification } from '../interfaces/notification.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NotificationService {
-    public notification: BehaviorSubject<Notification> = new BehaviorSubject<Notification>(null);
+    public notification: BehaviorSubject<INotification> = new BehaviorSubject<INotification>(null);
 
     /**
      * set error notification
-     * @param {Notification} notification notification object
+     * @param {INotification} notification notification object
      * @return {void}
      */
     public setErrorNotification(message: string): void {

@@ -1,0 +1,16 @@
+<div class="product">
+
+    <div class="product-container d-flex align-items-stretch">
+        <div class="product__image">
+            <img [src]="image" [alt]="title">
+        </div>
+        <div class="product-promo">
+            <h1 class="product__title">{{title}}</h1>
+            <div class="product__price">{{price|currency}}</div>
+            <button class="btn btn-outline-primary">
+                <span class="material-icons">shopping_cart</span> Add To Cart
+            </button>
+        </div>
+    </div>
+    <div class="product__description">{{description}}</div>
+</div>

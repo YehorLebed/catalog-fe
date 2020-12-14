@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
-import {User} from '../../interfaces/user.interface';
+import {IUser} from '../../interfaces/user.interface';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs';
 
@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs';
     styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-    public user: User = null;
+    public user: IUser = null;
     public showMenu = false;
     private subscription: Subscription;
 

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {AuthData, User} from '../interfaces/user.interface';
+import {IAuthData, IUser} from '../interfaces/user.interface';
 import {ErrorService} from './error.service';
 import {NotificationService} from './notification.service';
 import {UserApiService} from './user-api.service';
@@ -31,10 +31,10 @@ export class AuthService {
 
     /**
      * registrate user
-     * @param   {AuthData}  authData  user authentication data
+     * @param   {IAuthData}  authData  user authentication data
      * @return  {Promise<void>}
      */
-    public async registration(authData: AuthData): Promise<void> {
+    public async registration(authData: IAuthData): Promise<void> {
         try {
             const response = await this.userApiService.registration(authData);
 
@@ -47,10 +47,10 @@ export class AuthService {
 
     /**
      * login user
-     * @param   {AuthData}  authData  user authentication data
+     * @param   {IAuthData}  authData  user authentication data
      * @return  {Promise<void>}
      */
-    public async login(authData: AuthData): Promise<void> {
+    public async login(authData: IAuthData): Promise<void> {
         try {
             const response = await this.userApiService.login(authData);
             this.setAuthenticationData(response.token);
@@ -75,9 +75,9 @@ export class AuthService {
     /**
      * get user from token
      * @param   {string}  token  user token
-     * @return  {User}
+     * @return  {IUser}
      */
-    public getUser(): User | null {
+    public getUser(): IUser | null {
         return this.token.value
             ? jwtDecode(this.token.value)
             : null;

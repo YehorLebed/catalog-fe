@@ -1,0 +1,16 @@
+<div class="card-outer">
+    <div class="card product-card" style="width: 14rem;">
+        <img [src]="image" class="card-img-top" [alt]="title">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a [routerLink]="productPageLink">{{title}}</a>
+            </h5>
+            <div class="card-bottom">
+                <div class="card-price">{{price|currency}}</div>
+                <button class="btn btn-primary">
+                    <span class="material-icons">shopping_cart</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

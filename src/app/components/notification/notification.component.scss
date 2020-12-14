@@ -1,0 +1,12 @@
+.notification {
+    position: absolute;
+    bottom: 25px;
+    min-height: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    & pre {
+        margin: 0;
+        padding: 0;
+    }
+}

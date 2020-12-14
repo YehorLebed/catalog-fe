@@ -1,0 +1,53 @@
+<div class="authentication">
+    <div class="authentication__inner shadow">
+        <h3 class="title">Login/Registration</h3>
+
+        <form [formGroup]="form">
+
+            <!--  email input  -->
+            <div class="form-group">
+                <!--  Input field  -->
+                <label for="title">
+                    Email<span class="required">*</span>
+                </label>
+                <input
+                    id="title"
+                    type="email"
+                    class="form-control"
+                    formControlName="email"
+                    placeholder="Enter your email"
+                    [class.is-invalid]="email.touched && !email.valid">
+                <!--  Validation errors  -->
+                <app-validation-alert [field-control]="email" field-name="email"></app-validation-alert>
+            </div>
+
+            <!--  Password input  -->
+            <div class="form-group">
+                <!--  Input field  -->
+                <label for="password">
+                    Password<span class="required">*</span>
+                </label>
+                <input id="password" type="password" class="form-control" formControlName="password"
+                       placeholder="Enter your password" [class.is-invalid]="password.touched && !password.valid">
+                <!--  Validation errors  -->
+                <app-validation-alert [field-control]="password" field-name="Password"></app-validation-alert>
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!form.valid" (click)="handleLogin()">
+                Log in
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-secondary"
+                [disabled]="!form.valid"
+                (click)="handleRegistration()">
+                Create new account
+            </button>
+
+        </form>
+    </div>
+</div>

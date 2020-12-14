@@ -1,0 +1,18 @@
+<div *ngIf="field.touched && !field.valid" class="alert alert-danger">
+    <!--  Required  -->
+    <div *ngIf="field.errors.required">
+        {{required(name)}}
+    </div>
+    <!--  Minlength  -->
+    <div *ngIf="field.errors.minlength">
+        {{minlength(name, field.errors.minlength.requiredLength)}}
+    </div>
+    <!--  Maxlength  -->
+    <div *ngIf="field.errors.maxlength">
+        {{minlength(name, field.errors.maxlength.requiredLength)}}
+    </div>
+    <!--  Pattern  -->
+    <div *ngIf="field.errors.pattern">
+        {{pattern(name)}}
+    </div>
+</div>

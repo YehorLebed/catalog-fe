@@ -1,0 +1,12 @@
+<div
+    *ngIf="notification"
+    class="notification alert alert-dismissible fade"
+    [class.alert-warning]="notification.type === 'info'"
+    [class.alert-danger]="notification.type === 'error'"
+    [class.show]="isActive"
+>
+    <pre>{{notification.message}}</pre>
+    <button type="button" class="close" (click)="handleClose()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>

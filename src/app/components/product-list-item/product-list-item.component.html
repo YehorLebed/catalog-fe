@@ -3,7 +3,7 @@
         <img [src]="getImageSrc()" class="card-img-top" [alt]="product.title">
         <div class="card-body">
             <h5 class="card-title">
-                <a (click)="handleNavigate()">{{product.title}}</a>
+                <a style="cursor: pointer" (click)="handleNavigate()">{{product.title}}</a>
             </h5>
             <div class="card-bottom">
                 <div class="card-price">{{product.price|currency}}</div>

@@ -1,6 +1,6 @@
 <div class="products">
     <app-product-list
-        *ngIf="isShouldRenderProducts()"
+        *ngIf="this.products && this.products.length"
         [products]="this.products">
     </app-product-list>
 

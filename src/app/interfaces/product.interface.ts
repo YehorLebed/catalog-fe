@@ -21,8 +21,20 @@ export interface IProductsResponse {
     products: IProduct[];
 };
 
-export interface IProductQueryParams {
+export interface IProductCatalogPageParams {
     page: number;
     amount: number;
     categoryId?: number;
+}
+
+export interface IRecentlyAddedPageParams {
+    isRecentlyAdded: boolean;
+    page: number;
+    amount: number;
+}
+
+export interface IPopularProducts {
+    isPopular: boolean;
+    page: number;
+    amount: number;
 }

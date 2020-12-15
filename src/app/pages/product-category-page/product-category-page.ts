@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {ProductService} from '../../services/product.service';
-import {IProduct, IProductQueryParams} from '../../interfaces/product.interface';
+import {IProduct, IProductCatalogPageParams} from '../../interfaces/product.interface';
 
 @Component({
     selector: 'app-product-page',
@@ -11,10 +11,12 @@ import {IProduct, IProductQueryParams} from '../../interfaces/product.interface'
 })
 export class ProductCategoryPage implements OnInit {
 
-    private paramsSubscription: Subscription;
-    public products: IProduct[] = [];
     public loading = false;
-    public params: IProductQueryParams = {amount: 10, page: 1};
+    public isAllFetched = false;
+    public products: IProduct[] = [];
+    public params: IProductCatalogPageParams = {amount: 10, page: 0};
+
+    private paramsSubscription: Subscription;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -36,14 +38,18 @@ export class ProductCategoryPage implements OnInit {
     }
 
     fetchProducts() {
+        this.params.page++;
         this.loading = true;
         this.productService.getProductsByCategoryId(this.params).then(products => {
-            this.products = products;
+            if(products.length < this.params.amount) {
+                this.isAllFetched = true;
+            }
+            this.products.push(...products);
             this.loading = false;
         });
     }
 
     public isShouldRenderProducts() {
-        return !this.loading && Array.isArray(this.products);
+        return Array.isArray(this.products);
     }
 }

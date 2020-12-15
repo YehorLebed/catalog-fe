@@ -19,6 +19,8 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 import { DropdownComponent } from './common/dropdown/dropdown.component';
 import { CategoryComponent } from './components/category/category.component';
 import {LoaderComponent} from './components/loader.component';
+import { RecentlyAddedPageComponent } from './pages/recently-added-page/recently-added-page.component';
+import { PopularProductsPageComponent } from './pages/popular-products-page/popular-products-page.component';
 
 
 @NgModule({
@@ -38,6 +40,8 @@ import {LoaderComponent} from './components/loader.component';
         DropdownComponent,
         CategoryComponent,
         LoaderComponent,
+        RecentlyAddedPageComponent,
+        PopularProductsPageComponent,
     ],
     imports: [
         BrowserModule,

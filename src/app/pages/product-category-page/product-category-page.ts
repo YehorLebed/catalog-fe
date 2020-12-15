@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 @Component({
-  selector: 'app-product-page',
-  templateUrl: './product-category-page.html',
-  styleUrls: ['./product-category-page.scss']
+    selector: 'app-product-page',
+    templateUrl: './product-category-page.html',
+    styleUrls: ['./product-category-page.scss']
 })
 export class ProductCategoryPage implements OnInit {
 
-  constructor() { }
+    private activatedRouteSubscription: Subscription;
 
-  ngOnInit(): void {
-  }
+    constructor(private activatedRoute: ActivatedRoute) {
+    }
+
+    ngOnInit(): void {
+        this.subscribeOnRouteDataChange();
+    }
+
+    private subscribeOnRouteDataChange() {
+        this.activatedRouteSubscription = this.activatedRoute.data.subscribe(data => {
+            console.log(data);
+        });
+    }
 
 }

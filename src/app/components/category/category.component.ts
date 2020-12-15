@@ -1,7 +1,8 @@
-import {AfterContentChecked, Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ICategory} from '../../interfaces/category.interface';
 import {Category} from '../../classes/category.class';
 import {CategoryService} from '../../services/category.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-category',
@@ -15,20 +16,29 @@ export class CategoryComponent implements OnInit {
     public loading = false;
     public show = false;
 
-    constructor(private categoryService: CategoryService) {
+    constructor(
+        private categoryService: CategoryService,
+        private router: Router
+    ) {
     }
 
     ngOnInit(): void {
         if (!this.category) {
             this.category = new Category(null, 'Categories', null);
         }
-        this.onFetch();
     }
 
     public handleClick() {
         this.show = !this.show;
         if (!this.subCategories) {
             this.onFetch();
+        }
+    }
+
+    public handleLinkClick(event: MouseEvent) {
+        event.stopPropagation();
+        if (this.category.id) {
+            this.router.navigateByUrl(`/${this.category.id}`,);
         }
     }
 

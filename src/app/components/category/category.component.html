@@ -1,6 +1,8 @@
 <div class="category dropdown">
     <button class="btn btn-secondary dropdown-toggle" (click)="handleClick()">
-        <a class="category-link dropdown-link" href="#">{{category.title}}</a>
+        <a class="category-link dropdown-link" (click)="handleLinkClick($event)">
+            {{category.title}}
+        </a>
     </button>
 
     <!--  dropdown context  -->

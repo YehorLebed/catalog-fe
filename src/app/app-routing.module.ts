@@ -8,8 +8,8 @@ import {MainPageComponent} from './pages/main-page/main-page.component';
 const routes: Routes = [
     {path: '', pathMatch: 'full', component: MainPageComponent},
     {path: 'authentication', component: AuthenticationPageComponent,},
-    {path: 'products', pathMatch: 'full', component: ProductCategoryPage,},
-    {path: 'products/:id', pathMatch: 'full', component: ProductDetailPage,},
+    {path: ':categoryId', pathMatch: 'full', component: ProductCategoryPage,},
+    {path: ':categoryId/:productId', pathMatch: 'full', component: ProductDetailPage,},
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@ import {Component} from '@angular/core';
     selector: 'app-loader',
     template: `
         <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden"></span>
         </div>
     `
 })

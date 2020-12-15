@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { IErrorResponse } from '../interfaces/error.interface';
-import { NotificationService } from "./notification.service";
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
+import {IErrorResponse} from '../interfaces/error.interface';
+import {NotificationService} from './notification.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +13,8 @@ export class ErrorService {
 
     constructor(
         private notificationService: NotificationService
-    ) { }
+    ) {
+    }
 
     /**
      * process error http response
@@ -31,7 +32,7 @@ export class ErrorService {
 
     /**
      * set error response
-     * @param {HttpErrorResponse} errorResponse error response from server
+     * @param {HttpErrorResponse} errorHttpResponse error response from server
      * @return {void}
      */
     private setErrorResponse(errorHttpResponse: HttpErrorResponse): void {
@@ -44,7 +45,7 @@ export class ErrorService {
      * @return {string} notification message
      */
     getErrorMessage(): string {
-        if (this.errorResponse) {
+        if (this.errorResponse && Array.isArray(this.errorResponse.errors)) {
             return this.errorResponse.errors.join('\n');
         } else {
             return this.errorHttpResponse.message;

@@ -1,4 +1,8 @@
-<aside>
-    content...
-</aside>
-<app-product-list></app-product-list>
+<div class="products">
+    <app-product-list
+        *ngIf="isShouldRenderProducts()"
+        [products]="this.products">
+    </app-product-list>
+
+    <div class="text-center"><app-loader *ngIf="loading"></app-loader></div>
+</div>

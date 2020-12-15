@@ -1,12 +1,12 @@
 <div class="card-outer">
     <div class="card product-card" style="width: 14rem;">
-        <img [src]="image" class="card-img-top" [alt]="title">
+        <img [src]="getImageSrc()" class="card-img-top" [alt]="product.title">
         <div class="card-body">
             <h5 class="card-title">
-                <a [routerLink]="productPageLink">{{title}}</a>
+                <a (click)="handleNavigate()">{{product.title}}</a>
             </h5>
             <div class="card-bottom">
-                <div class="card-price">{{price|currency}}</div>
+                <div class="card-price">{{product.price|currency}}</div>
                 <button class="btn btn-primary">
                     <span class="material-icons">shopping_cart</span>
                 </button>

@@ -1,4 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {IProduct} from '../../interfaces/product.interface';
+import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-product-list-item',
@@ -6,9 +9,16 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./product-list-item.component.scss']
 })
 export class ProductListItemComponent {
-    public id = 2;
-    public title = 'Apple Iphone 12 Pro Max';
-    public price = 13854.00;
-    public image = `https://www.researchgate.net/profile/Rizwan_Usman/publication/266200280/figure/fig1/AS:392033165430784@1470479398065/Original-image-256x256_Q320.jpg`
-    public productPageLink = `/products/${this.id}`;
+    @Input('product') product: IProduct;
+
+    constructor(private router: Router) {
+    }
+
+    handleNavigate() {
+        this.router.navigateByUrl(`/products/${this.product.id}`);
+    }
+
+    getImageSrc() {
+        return environment.url + this.product.image.medium;
+    }
 }

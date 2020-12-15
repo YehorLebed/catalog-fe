@@ -10,9 +10,19 @@ export interface IProduct {
     id?: number;
     price: number;
     title: string;
-    isPromo: boolean;
+    isPromo?: boolean;
     createdAt: number
     description: string;
-    category: ICategory;
+    category?: ICategory;
     image: IProductImage;
 };
+
+export interface IProductsResponse {
+    products: IProduct[];
+};
+
+export interface IProductQueryParams {
+    page: number;
+    amount: number;
+    categoryId?: number;
+}

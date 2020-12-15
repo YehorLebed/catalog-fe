@@ -38,7 +38,7 @@ export class CategoryComponent implements OnInit {
     public handleLinkClick(event: MouseEvent) {
         event.stopPropagation();
         if (this.category.id) {
-            this.router.navigateByUrl(`/${this.category.id}`,);
+            this.router.navigateByUrl(`/categories/${this.category.id}`,);
         }
     }
 
@@ -46,7 +46,6 @@ export class CategoryComponent implements OnInit {
         this.loading = true;
         this.categoryService.getCategoriesByParentId(this.category.id)
             .then(res => {
-                console.log(res);
                 this.subCategories = res;
                 this.loading = false;
             });

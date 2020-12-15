@@ -37,7 +37,7 @@ import {LoaderComponent} from './components/loader.component';
         MainPageComponent,
         DropdownComponent,
         CategoryComponent,
-        LoaderComponent
+        LoaderComponent,
     ],
     imports: [
         BrowserModule,

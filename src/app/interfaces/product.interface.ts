@@ -1,4 +1,6 @@
 import {ICategory} from './category.interface';
+import {WithPagination} from './pagination.interface';
+import {ISelect} from './select.interface';
 
 export interface IProductImage {
     small: string;
@@ -21,20 +23,18 @@ export interface IProductsResponse {
     products: IProduct[];
 };
 
-export interface IProductCatalogPageParams {
-    page: number;
-    amount: number;
+export interface IProductQueryParameters extends WithPagination {
+    isPopular?: boolean;
     categoryId?: number;
+    isRecentlyAdded?: boolean;
+    orderBy?: string;
+    isDesc?: boolean;
 }
 
-export interface IRecentlyAddedPageParams {
-    isRecentlyAdded: boolean;
-    page: number;
-    amount: number;
+export interface IProductOrderSelect extends ISelect {
+    field?: string;
+    isDesc?: boolean;
+    isDefault?: boolean;
 }
 
-export interface IPopularProducts {
-    isPopular: boolean;
-    page: number;
-    amount: number;
-}
+

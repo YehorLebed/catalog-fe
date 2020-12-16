@@ -1,14 +1,1 @@
-<div class="products">
-    <app-product-list
-        *ngIf="this.products && this.products.length"
-        [products]="this.products">
-    </app-product-list>
-
-    <div  *ngIf="loading" class="text-center">
-        <app-loader></app-loader>
-    </div>
-
-    <div *ngIf="!loading && !isAllFetched" class="text-center">
-        <button class="btn btn-dark" (click)="fetchProducts()">Load more</button>
-    </div>
-</div>
+<app-product-outlet [params]="params"></app-product-outlet>

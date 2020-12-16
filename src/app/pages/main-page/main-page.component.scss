@@ -1,0 +1,17 @@
+.main-page {
+    display: flex;
+    align-items: stretch;
+
+    &__products {
+        &-up {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 1rem 2rem 0 2rem;
+
+            & .text {
+            margin-left: 20px;
+            }
+        }
+    }
+}

@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
-import {ProductService} from '../../services/product.service';
-import {IProduct, IProductCatalogPageParams} from '../../interfaces/product.interface';
+import {IProductQueryParameters} from '../../interfaces/product.interface';
 
 @Component({
     selector: 'app-product-page',
@@ -11,22 +10,14 @@ import {IProduct, IProductCatalogPageParams} from '../../interfaces/product.inte
 })
 export class ProductCategoryPage implements OnInit {
 
-    public loading = false;
-    public isAllFetched = false;
-    public products: IProduct[] = [];
-    public params: IProductCatalogPageParams = {amount: 10, page: 0};
-
+    public params: any = {};
     private paramsSubscription: Subscription;
 
-    constructor(
-        private activatedRoute: ActivatedRoute,
-        private productService: ProductService
-    ) {
+    constructor(private activatedRoute: ActivatedRoute) {
     }
 
     ngOnInit(): void {
         this.subscribeOnRouteDataChange();
-        this.fetchProducts();
     }
 
     private subscribeOnRouteDataChange() {
@@ -35,21 +26,5 @@ export class ProductCategoryPage implements OnInit {
                 this.params.categoryId = +params.categoryId;
             }
         });
-    }
-
-    fetchProducts() {
-        this.params.page++;
-        this.loading = true;
-        this.productService.getProductsByCategoryId(this.params).then(products => {
-            if(products.length < this.params.amount) {
-                this.isAllFetched = true;
-            }
-            this.products.push(...products);
-            this.loading = false;
-        });
-    }
-
-    public isShouldRenderProducts() {
-        return Array.isArray(this.products);
     }
 }

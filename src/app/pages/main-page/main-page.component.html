@@ -1,1 +1,18 @@
-<app-category></app-category>
+<div class="main-page">
+    <app-sidebar [show]="show">
+        <app-category></app-category>
+    </app-sidebar>
+
+    <div class="main-page__products">
+        <div class="main-page__products-up">
+            <app-button-icon
+                type="btn-dark" icon="menu" (onClick)="toggleSidebar()"
+            ></app-button-icon>
+            <div class="text">Show menu</div>
+        </div>
+        <app-product-outlet
+            [withFilter]="true"
+            [params]="params"
+        ></app-product-outlet>
+    </div>
+</div>

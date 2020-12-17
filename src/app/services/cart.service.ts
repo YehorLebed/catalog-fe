@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {ICartProduct} from '../interfaces/cart-product.interface';
 import {IProduct} from '../interfaces/product.interface';
+import {NotificationService} from './notification.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +11,34 @@ export class CartService {
 
     private cartProducts = new BehaviorSubject<ICartProduct[]>([]);
 
-    constructor() {
+    constructor(
+        private notificationService: NotificationService
+    ) {
+        this.loadSavedData();
+    }
+
+    /**
+     * load cart data from localstorage
+     */
+    public loadSavedData() {
+        const savedCartDataJson = localStorage.getItem('cart');
+        if (savedCartDataJson) {
+            try {
+                const savedCartData = JSON.parse(savedCartDataJson);
+                this.cartProducts.next(savedCartData);
+            } catch (error) {
+                const msg = 'Failed to load cart from storage';
+                this.notificationService.setErrorNotification(msg);
+            }
+        }
+    }
+
+    /**
+     * save data to local storage and to behavior subject
+     */
+    public save(cp: ICartProduct[]) {
+        this.cartProducts.next(cp);
+        localStorage.setItem('cart', JSON.stringify(cp));
     }
 
     /**
@@ -35,8 +63,7 @@ export class CartService {
         } else {
             cartProducts[idxExists].quantity += quantity;
         }
-
-        this.cartProducts.next(cartProducts);
+        this.save(cartProducts);
     }
 
     /**
@@ -58,6 +85,6 @@ export class CartService {
                 ];
             }
         }
-        this.cartProducts.next(cartProducts);
+        this.save(cartProducts);
     }
 }

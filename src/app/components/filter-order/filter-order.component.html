@@ -1,0 +1,14 @@
+<div class="form-group filter-order">
+    <select
+        #select
+        class="form-control"
+        aria-label="Order by..."
+        (change)="handleChange(select.value)"
+    >
+        <option
+            *ngFor="let option of options"
+            [value]="option.value"
+            [selected]="option.isSelected"
+        >{{option.name}}</option>
+    </select>
+</div>

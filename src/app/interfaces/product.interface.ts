@@ -31,6 +31,7 @@ export interface IProductQueryParameters extends WithPagination {
     isDesc?: boolean;
     minPrice?: number;
     maxPrice?: number;
+    search?: string;
 }
 
 export interface IProductOrderSelect extends ISelect {

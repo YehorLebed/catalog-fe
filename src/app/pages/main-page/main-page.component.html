@@ -11,7 +11,9 @@
             <div class="text">Show menu</div>
         </div>
         <app-product-outlet
-            [withFilter]="true"
+            [withOrdering]="true"
+            [withFilterSearch]="true"
+            [withFilterPrice]="true"
             [params]="params"
         ></app-product-outlet>
     </div>

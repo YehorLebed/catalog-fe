@@ -24,8 +24,10 @@ import {PopularProductsPageComponent} from './pages/popular-products-page/popula
 import {ProductOutletComponent} from './components/product-outlet/product-outlet.component';
 import {SidebarComponent} from './common/sidebar/sidebar.component';
 import {ButtonIconComponent} from './common/button-icon.component';
-import {OrderOutletComponent} from './components/order-outlet/order-outlet.component';
+import {FilterOrderComponent} from './components/filter-order/filter-order.component';
 import { FilterPriceComponent } from './components/filter-price/filter-price.component';
+import { FilterSearchComponent } from './components/filter-search/filter-search.component';
+import { CartPageComponent } from './pages/cart-page/cart-page.component';
 
 
 @NgModule({
@@ -50,8 +52,10 @@ import { FilterPriceComponent } from './components/filter-price/filter-price.com
         ProductOutletComponent,
         SidebarComponent,
         ButtonIconComponent,
-        OrderOutletComponent,
+        FilterOrderComponent,
         FilterPriceComponent,
+        FilterSearchComponent,
+        CartPageComponent,
     ],
     imports: [
         BrowserModule,

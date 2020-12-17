@@ -13,8 +13,9 @@ export class ProductOutletComponent implements OnInit {
 
     @Output('onParamsChange') onParamsChange = new EventEmitter<IProductQueryParameters>();
     @Input('params') inputParams: IProductQueryParameters;
-    @Input('withOrdering') withOrdering = false;
+    @Input('withFilterSearch') withFilterSearch = false;
     @Input('withFilterPrice') withFilterPrice = false;
+    @Input('withOrdering') withOrdering = false;
 
     public loading = false;
     public isAllFetched = false;
@@ -108,4 +109,22 @@ export class ProductOutletComponent implements OnInit {
         });
     }
 
+    handleFilterSearch(search: string) {
+        let shouldReload = false;
+        const params = {...this.params};
+
+        if(search && search !== this.params.search) {
+            params.search = search;
+            shouldReload = true;
+        }
+        if(!search && this.params.search) {
+            delete params.search;
+            shouldReload = true;
+        }
+
+        if(shouldReload) {
+            this.params = params;
+            this.reload();
+        }
+    }
 }

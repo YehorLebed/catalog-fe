@@ -1,0 +1,15 @@
+<form [formGroup]="filterSearch" class="filter-search row g-3">
+    <div class="col">
+        <input
+            type="text"
+            class="form-control"
+            placeholder="Search by title or description"
+            formControlName="search"
+        >
+    </div>
+    <button
+        class="btn btn-dark"
+        [disabled]="filterSearch.pristine || filterSearch.invalid"
+        (click)="onSubmit()"
+    >Search</button>
+</form>

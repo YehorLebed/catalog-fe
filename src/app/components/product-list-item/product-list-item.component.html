@@ -7,7 +7,10 @@
             </h5>
             <div class="card-bottom">
                 <div class="card-price">{{product.price|currency}}</div>
-                <button class="btn btn-primary">
+                <button
+                    class="btn btn-primary"
+                    (click)="handleAddProductToCart(product)"
+                >
                     <span class="material-icons">shopping_cart</span>
                 </button>
             </div>

@@ -1,4 +1,4 @@
-<form [formGroup]="filterPrice" class="row g-3">
+<form [formGroup]="filterPrice" class="filter-price row g-3">
     <div class="col">
         <input
             type="number"
@@ -15,9 +15,11 @@
             formControlName="maxPrice"
         >
     </div>
-    <button
-        class="btn btn-dark"
-        [disabled]="filterPrice.invalid"
-        (click)="onSubmit()"
-    >Filter</button>
+    <div class="col">
+        <button
+            class="btn btn-dark"
+            [disabled]="filterPrice.invalid"
+            (click)="onSubmit()"
+        >Filter</button>
+    </div>
 </form>

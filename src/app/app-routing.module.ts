@@ -6,6 +6,7 @@ import {AuthenticationPageComponent} from './pages/authentication-page/authentic
 import {MainPageComponent} from './pages/main-page/main-page.component';
 import {RecentlyAddedPageComponent} from './pages/recently-added-page/recently-added-page.component';
 import {PopularProductsPageComponent} from './pages/popular-products-page/popular-products-page.component';
+import {CartPageComponent} from './pages/cart-page/cart-page.component';
 
 const routes: Routes = [
     {path: '', pathMatch: 'full', component: MainPageComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
     {path: 'popular', pathMatch: 'full', component: PopularProductsPageComponent,},
     {path: 'categories/:categoryId', pathMatch: 'full', component: ProductCategoryPage,},
     {path: 'products/:productId', pathMatch: 'full', component: ProductDetailPage,},
+    {path: 'cart', pathMatch: 'full', component: CartPageComponent}
 ];
 
 @NgModule({

@@ -1,9 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {CartService} from '../services/cart.service';
 
 @Component({
     selector: 'app-shopping-cart',
     template: `
-        <div class="shopping-cart">
+        <div class="shopping-cart" routerLink="cart">
             <span class="material-icons">shopping_cart</span>
             <span class="shopping-cart-number">{{numberOfItems}}</span>
         </div>
@@ -31,10 +33,23 @@ import {Component} from '@angular/core';
         }
     `]
 })
-export class ShoppingCartIconComponent {
-    public numberOfItems = 8;
+export class ShoppingCartIconComponent implements OnInit, OnDestroy {
+    private subscription: Subscription;
+    public numberOfItems: number;
 
-    constructor() {
+    constructor(private cartService: CartService) {
+    }
+
+    ngOnInit() {
+        this.subscription = this.cartService.subscribeOnProductsChange(cp => {
+            let numberOfItems = 0;
+            cp.forEach(p => numberOfItems += p.quantity);
+            this.numberOfItems = numberOfItems;
+        });
+    };
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
 }

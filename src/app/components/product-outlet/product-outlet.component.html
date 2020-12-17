@@ -1,9 +1,14 @@
 <div class="products">
+    <div class="products__menu search">
+        <app-filter-search
+            (onApply)="handleFilterSearch($event)"
+        ></app-filter-search>
+    </div>
     <div class="products__menu">
-        <app-order-outlet *ngIf="withOrdering"
-            [options]="orderOptions"
-            (onChange)="handleOrderChange($event)"
-        ></app-order-outlet>
+        <app-filter-order *ngIf="withOrdering"
+                          [options]="orderOptions"
+                          (onChange)="handleOrderChange($event)"
+        ></app-filter-order>
         <app-filter-price
             *ngIf="withFilterPrice"
             (onApply)="handleFilterPrice($event)"

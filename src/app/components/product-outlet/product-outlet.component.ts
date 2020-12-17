@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IProduct, IProductOrderSelect, IProductQueryParameters} from '../../interfaces/product.interface';
 import {ProductService} from '../../services/product.service';
 import {Product} from '../../classes/product.class';
+import {IFilterPrice} from '../../classes/price-validator.class';
 
 @Component({
     selector: 'app-product-outlet',
@@ -12,7 +13,8 @@ export class ProductOutletComponent implements OnInit {
 
     @Output('onParamsChange') onParamsChange = new EventEmitter<IProductQueryParameters>();
     @Input('params') inputParams: IProductQueryParameters;
-    @Input('withFilter') withFilter = false;
+    @Input('withOrdering') withOrdering = false;
+    @Input('withFilterPrice') withFilterPrice = false;
 
     public loading = false;
     public isAllFetched = false;
@@ -57,6 +59,37 @@ export class ProductOutletComponent implements OnInit {
         }
     }
 
+    handleFilterPrice(value: IFilterPrice) {
+        let shouldReload = false;
+        const params = {...this.params};
+        const {minPrice, maxPrice} = value;
+
+        // if filter deleted
+        if (minPrice === null && this.params.minPrice !== undefined) {
+            delete params.minPrice;
+            shouldReload = true;
+        }
+        if (maxPrice === null && this.params.maxPrice !== undefined) {
+            delete params.maxPrice;
+            shouldReload = true;
+        }
+
+        // if filter added and changes
+        if (typeof minPrice === 'number' && minPrice !== this.params.minPrice) {
+            params.minPrice = minPrice;
+            shouldReload = true;
+        }
+        if (typeof maxPrice === 'number' && maxPrice !== this.params.maxPrice) {
+            params.maxPrice = maxPrice;
+            shouldReload = true;
+        }
+
+        if (shouldReload) {
+            this.params = params;
+            this.reload();
+        }
+    }
+
     private reload() {
         this.params.page = 0;
         this.products = [];
@@ -64,7 +97,6 @@ export class ProductOutletComponent implements OnInit {
     }
 
     fetchProducts() {
-        console.log(this.params);
         this.params.page++;
         this.loading = true;
         this.productService.fetchProductsByParameters(this.params).then(products => {

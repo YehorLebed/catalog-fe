@@ -1,9 +1,13 @@
 <div class="products">
     <div class="products__menu">
-        <app-order-outlet *ngIf="withFilter"
+        <app-order-outlet *ngIf="withOrdering"
             [options]="orderOptions"
             (onChange)="handleOrderChange($event)"
         ></app-order-outlet>
+        <app-filter-price
+            *ngIf="withFilterPrice"
+            (onApply)="handleFilterPrice($event)"
+        ></app-filter-price>
     </div>
 
     <app-product-list

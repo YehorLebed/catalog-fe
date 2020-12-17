@@ -25,6 +25,7 @@ import {ProductOutletComponent} from './components/product-outlet/product-outlet
 import {SidebarComponent} from './common/sidebar/sidebar.component';
 import {ButtonIconComponent} from './common/button-icon.component';
 import {OrderOutletComponent} from './components/order-outlet/order-outlet.component';
+import { FilterPriceComponent } from './components/filter-price/filter-price.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import {OrderOutletComponent} from './components/order-outlet/order-outlet.compo
         SidebarComponent,
         ButtonIconComponent,
         OrderOutletComponent,
+        FilterPriceComponent,
     ],
     imports: [
         BrowserModule,

@@ -14,6 +14,10 @@ export class ProductService {
     ) {
     }
 
+    /**
+     * fetch products from server
+     * @param params
+     */
     public async fetchProductsByParameters(params: IProductQueryParameters): Promise<IProduct[]> {
         try {
             const response = await this.productApi.fetchProductsByParameters(params);
@@ -23,4 +27,15 @@ export class ProductService {
         }
     }
 
+    /**
+     * fetch product from server
+     * @param id
+     */
+    public async fetchProductById(id: number):Promise<IProduct> {
+        try {
+            return await this.productApi.fetchProductById(id);
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        }
+    }
 }

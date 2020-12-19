@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {IProductsResponse} from '../interfaces/product.interface';
+import {IProduct, IProductsResponse} from '../interfaces/product.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -9,6 +9,10 @@ import {IProductsResponse} from '../interfaces/product.interface';
 export class ProductApiService {
 
     constructor(private httpClient: HttpClient) {
+    }
+
+    private prepareUrlGetById(id: number) {
+        return `${environment.url}/products/${id}`;
     }
 
     private prepareUrlUsingParameters(params: any) {
@@ -28,5 +32,14 @@ export class ProductApiService {
     public fetchProductsByParameters(parameters: any): Promise<IProductsResponse> {
         const url = this.prepareUrlUsingParameters(parameters);
         return this.httpClient.get<IProductsResponse>(url).toPromise();
+    }
+
+    /**
+     * get product by id params
+     * @param id
+     */
+    public fetchProductById(id: number) {
+        const url = this.prepareUrlGetById(id);
+        return this.httpClient.get<IProduct>(url).toPromise();
     }
 }

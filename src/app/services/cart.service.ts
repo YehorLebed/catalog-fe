@@ -1,31 +1,126 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {ICartProduct} from '../interfaces/cart-product.interface';
 import {IProduct} from '../interfaces/product.interface';
 import {NotificationService} from './notification.service';
+import {ErrorService} from './error.service';
+import {CartApiService} from './cart-api.service';
+import {AuthService} from './auth.service';
+import {Cart} from '../classes/cart.class';
+import {ICart} from '../interfaces/cart.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CartService {
 
-    private cartProducts = new BehaviorSubject<ICartProduct[]>([]);
+    private cart = new BehaviorSubject<ICart>(
+        new Cart(null, {id: null}, [],)
+    );
 
     constructor(
-        private notificationService: NotificationService
+        private authService: AuthService,
+        private errorService: ErrorService,
+        private cartApiService: CartApiService,
+        private notificationService: NotificationService,
     ) {
-        this.loadSavedData();
+        this.subscribeOnAuthChange();
+    }
+
+    /**
+     * subscribe on user authentication change
+     * @private
+     */
+    private subscribeOnAuthChange() {
+        this.authService.subscribeOnTokenChange(async token => {
+            if (!token) {
+                this.loadCartData();
+            } else {
+                const user = this.authService.getUser();
+                if (this.cart.value.products.length !== 0) {
+                    await this.mergeCart(
+                        new Cart(null, user, this.cart.value.products)
+                    );
+                }
+                await this.fetchCartByUserId(user.id);
+            }
+        });
+    }
+
+    /**
+     * fetch user cart
+     * @param id
+     * @private
+     */
+    private async fetchCartByUserId(id: number) {
+        try {
+            const cart = await this.cartApiService.fetchCartByUserId(id);
+            this.cart.next(cart);
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        }
+    }
+
+    /**
+     * update cart
+     * @param cart
+     */
+    public async updateCart(cart: ICart) {
+        try {
+            const cartRequest = Cart.prepareRequestData(cart);
+            const isUpdated = await this.cartApiService.updateCart(cartRequest);
+            if (!isUpdated) {
+                const msg = 'Failed to update your cart';
+                this.notificationService.setErrorNotification(msg);
+            }
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        }
+    }
+
+    /**
+     * merge cart
+     * @private
+     * @param cart
+     */
+    private async mergeCart(cart: ICart) {
+        try {
+            const cartRequest = Cart.prepareRequestData(cart);
+            const isMerged = await this.cartApiService.updateCart(cartRequest, true);
+            if (!isMerged) {
+                const msg = 'Failed to merge your cart';
+                this.notificationService.setErrorNotification(msg);
+            } else {
+                localStorage.removeItem('cart');
+                const msg = 'Your cart was merged successfully';
+                this.notificationService.setInfoNotification(msg);
+            }
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        }
+    }
+
+    /**
+     * load cart data
+     */
+    public loadCartData() {
+        const user = this.authService.getUser();
+        if (!user) {
+            this.loadSavedDataFromLocalStorage();
+        } else {
+            this.fetchCartByUserId(user.id);
+        }
     }
 
     /**
      * load cart data from localstorage
      */
-    public loadSavedData() {
+    public loadSavedDataFromLocalStorage() {
         const savedCartDataJson = localStorage.getItem('cart');
         if (savedCartDataJson) {
             try {
                 const savedCartData = JSON.parse(savedCartDataJson);
-                this.cartProducts.next(savedCartData);
+                this.cart.next({...this.cart.value, products: savedCartData});
             } catch (error) {
                 const msg = 'Failed to load cart from storage';
                 this.notificationService.setErrorNotification(msg);
@@ -36,9 +131,14 @@ export class CartService {
     /**
      * save data to local storage and to behavior subject
      */
-    public save(cp: ICartProduct[]) {
-        this.cartProducts.next(cp);
-        localStorage.setItem('cart', JSON.stringify(cp));
+    public save(cart: ICart) {
+        this.cart.next(cart);
+        const user = this.authService.getUser();
+        if (!user) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        } else {
+            this.updateCart(cart);
+        }
     }
 
     /**
@@ -46,7 +146,7 @@ export class CartService {
      * @param cb
      */
     public subscribeOnProductsChange(cb: (cp: ICartProduct[]) => void): Subscription {
-        return this.cartProducts.subscribe(cb);
+        return this.cart.subscribe(cart => cb(cart.products));
     }
 
     /**
@@ -55,7 +155,7 @@ export class CartService {
      * @param quantity
      */
     public addProduct(product: IProduct, quantity: number) {
-        const cartProducts = [...this.cartProducts.value];
+        const cartProducts = [...this.cart.value.products];
 
         const idxExists = cartProducts.findIndex(cp => cp.product.id === product.id);
         if (idxExists === -1) {
@@ -63,7 +163,7 @@ export class CartService {
         } else {
             cartProducts[idxExists].quantity += quantity;
         }
-        this.save(cartProducts);
+        this.save({...this.cart.value, products: cartProducts});
     }
 
     /**
@@ -72,7 +172,7 @@ export class CartService {
      * @param quantity
      */
     public removeProduct(productId: number, quantity: number) {
-        let cartProducts = [...this.cartProducts.value];
+        let cartProducts = [...this.cart.value.products];
 
         const idxExists = cartProducts.findIndex(cp => cp.product.id === productId);
         if (idxExists !== -1) {
@@ -85,6 +185,6 @@ export class CartService {
                 ];
             }
         }
-        this.save(cartProducts);
+        this.save({...this.cart.value, products: cartProducts});
     }
 }

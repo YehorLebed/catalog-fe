@@ -10,9 +10,9 @@ export interface IRole {
  * IUser interface
  */
 export interface IUser {
-    id: number;
-    email: string;
-    role: IRole;
+    id?: number;
+    email?: string;
+    role?: IRole;
 }
 
 /**

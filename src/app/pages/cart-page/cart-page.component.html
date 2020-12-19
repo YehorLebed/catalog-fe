@@ -1,4 +1,8 @@
-<table class="cart-table table">
+<div *ngIf="loading" class="row text-center">
+    <app-loader></app-loader>
+</div>
+
+<table *ngIf="!loading" class="cart-table table">
     <thead>
     <tr>
         <th scope="col">ID</th>

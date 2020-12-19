@@ -84,6 +84,13 @@ export class AuthService {
     }
 
     /**
+     * get authentication token
+     */
+    public getToken():string |null {
+        return this.token.value;
+    }
+
+    /**
      * set token and save it ti local storage
      * @param   {string}  token  jwt token
      * @return  {void}

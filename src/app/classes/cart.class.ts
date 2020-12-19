@@ -8,7 +8,7 @@ export class Cart implements ICart {
     public products: ICartProduct[];
     public updatedAt?: number;
 
-    constructor(id: number, user: IUser, products: ICartProduct[], updatedAt?: number) {
+    constructor(id: number = null, user: IUser = null, products: ICartProduct[] = [], updatedAt: number = null) {
         this.id = id;
         this.user = user;
         this.products = products;

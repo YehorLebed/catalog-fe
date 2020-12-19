@@ -1,26 +1,39 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ICart, ICartRequest} from '../interfaces/cart.interface';
 import {environment} from '../../environments/environment';
+import {AuthService} from './auth.service';
+import {Cart} from '../classes/cart.class';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CartApiService {
 
-    constructor(private httpClient: HttpClient) {
+    constructor(
+        private httpClient: HttpClient,
+        private authService: AuthService
+    ) {
+    }
+
+    /**
+     * prepare authorization headers
+     * @private
+     */
+    private prepareAuthHeaders(): HttpHeaders {
+        const token = this.authService.getToken();
+        const authHeader = {'Authorization': 'Bearer ' + token};
+        return new HttpHeaders(authHeader);
     }
 
     /**
      * prepare merge request url
      * @param id
-     * @param isMerge
+     * @param type
      * @private
      */
-    private prepareUrlUpdateCartByUserId(id: number, isMerge: boolean = false): string {
-        return isMerge
-            ? this.prepareUrlGetCartByUserId(id) + '?isMerge=true'
-            : this.prepareUrlGetCartByUserId(id);
+    private prepareUrlUpdateCartByUserId(id: number, type: string): string {
+        return this.prepareUrlGetCartByUserId(id) + `?type=${type}`;
     }
 
     /**
@@ -38,17 +51,37 @@ export class CartApiService {
      */
     public fetchCartByUserId(id: number): Promise<ICart> {
         const url = this.prepareUrlGetCartByUserId(id);
-        return this.httpClient.get<ICart>(url).toPromise();
+        const headers = this.prepareAuthHeaders();
+        return this.httpClient.get<ICart>(url, {headers}).toPromise();
     }
 
     /**
      * update cart
      * @param cart
-     * @param isMerge
+     * @param type
      */
-    public updateCart(cart: ICartRequest, isMerge: boolean = false): Promise<boolean> {
-        const url = this.prepareUrlUpdateCartByUserId(cart.user.id, isMerge);
-        return this.httpClient.put(url, cart, {observe: 'response'})
+    public updateCart(cart: ICartRequest, type: string): Promise<boolean> {
+        const userId = cart.user && cart.user.id || this.authService.getUser().id;
+        const url = this.prepareUrlUpdateCartByUserId(userId, type);
+        const headers = this.prepareAuthHeaders();
+        return this.httpClient.put(url, cart, {observe: 'response', headers})
             .toPromise().then(response => response.status === 200);
+    };
+
+    /**
+     * get saved in localstorage cart
+     */
+    public fetchSavedCart(): ICart {
+        const exists = localStorage.getItem('cart');
+        const products = exists ? JSON.parse(exists) : [];
+        return new Cart(null, null, products);
+    }
+
+    /**
+     * save cart to localstorage
+     * @param cart
+     */
+    public updateSavedCart(cart: ICart) {
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
 }

@@ -7,16 +7,15 @@ import {ErrorService} from './error.service';
 import {CartApiService} from './cart-api.service';
 import {AuthService} from './auth.service';
 import {Cart} from '../classes/cart.class';
-import {ICart} from '../interfaces/cart.interface';
+import {ICart, ICartRequest} from '../interfaces/cart.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CartService {
 
-    private cart = new BehaviorSubject<ICart>(
-        new Cart(null, {id: null}, [],)
-    );
+    public loading = new BehaviorSubject<boolean>(false);
+    private cart = new BehaviorSubject<ICart>(new Cart());
 
     constructor(
         private authService: AuthService,
@@ -34,111 +33,15 @@ export class CartService {
     private subscribeOnAuthChange() {
         this.authService.subscribeOnTokenChange(async token => {
             if (!token) {
-                this.loadCartData();
+                this.cart.next(this.fetchSavedCart());
             } else {
                 const user = this.authService.getUser();
                 if (this.cart.value.products.length !== 0) {
-                    await this.mergeCart(
-                        new Cart(null, user, this.cart.value.products)
-                    );
+                    await this.updateCart(Cart.prepareRequestData(this.cart.value), 'merge');
                 }
-                await this.fetchCartByUserId(user.id);
+                this.cart.next(await this.fetchCartByUserId(user.id));
             }
         });
-    }
-
-    /**
-     * fetch user cart
-     * @param id
-     * @private
-     */
-    private async fetchCartByUserId(id: number) {
-        try {
-            const cart = await this.cartApiService.fetchCartByUserId(id);
-            this.cart.next(cart);
-        } catch (error) {
-            this.errorService.processErrorResponse(error);
-        }
-    }
-
-    /**
-     * update cart
-     * @param cart
-     */
-    public async updateCart(cart: ICart) {
-        try {
-            const cartRequest = Cart.prepareRequestData(cart);
-            const isUpdated = await this.cartApiService.updateCart(cartRequest);
-            if (!isUpdated) {
-                const msg = 'Failed to update your cart';
-                this.notificationService.setErrorNotification(msg);
-            }
-        } catch (error) {
-            this.errorService.processErrorResponse(error);
-        }
-    }
-
-    /**
-     * merge cart
-     * @private
-     * @param cart
-     */
-    private async mergeCart(cart: ICart) {
-        try {
-            const cartRequest = Cart.prepareRequestData(cart);
-            const isMerged = await this.cartApiService.updateCart(cartRequest, true);
-            if (!isMerged) {
-                const msg = 'Failed to merge your cart';
-                this.notificationService.setErrorNotification(msg);
-            } else {
-                localStorage.removeItem('cart');
-                const msg = 'Your cart was merged successfully';
-                this.notificationService.setInfoNotification(msg);
-            }
-        } catch (error) {
-            this.errorService.processErrorResponse(error);
-        }
-    }
-
-    /**
-     * load cart data
-     */
-    public loadCartData() {
-        const user = this.authService.getUser();
-        if (!user) {
-            this.loadSavedDataFromLocalStorage();
-        } else {
-            this.fetchCartByUserId(user.id);
-        }
-    }
-
-    /**
-     * load cart data from localstorage
-     */
-    public loadSavedDataFromLocalStorage() {
-        const savedCartDataJson = localStorage.getItem('cart');
-        if (savedCartDataJson) {
-            try {
-                const savedCartData = JSON.parse(savedCartDataJson);
-                this.cart.next({...this.cart.value, products: savedCartData});
-            } catch (error) {
-                const msg = 'Failed to load cart from storage';
-                this.notificationService.setErrorNotification(msg);
-            }
-        }
-    }
-
-    /**
-     * save data to local storage and to behavior subject
-     */
-    public save(cart: ICart) {
-        this.cart.next(cart);
-        const user = this.authService.getUser();
-        if (!user) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        } else {
-            this.updateCart(cart);
-        }
     }
 
     /**
@@ -154,8 +57,15 @@ export class CartService {
      * @param product
      * @param quantity
      */
-    public addProduct(product: IProduct, quantity: number) {
+    public async addProduct(product: IProduct, quantity: number) {
         const cartProducts = [...this.cart.value.products];
+
+        if (this.authService.getUser()) {
+            const productToAdd = {id: product.id, quantity};
+            await this.updateCart({products: [productToAdd]}, 'add');
+        } else {
+            this.updateSavedCart({products: cartProducts});
+        }
 
         const idxExists = cartProducts.findIndex(cp => cp.product.id === product.id);
         if (idxExists === -1) {
@@ -163,7 +73,8 @@ export class CartService {
         } else {
             cartProducts[idxExists].quantity += quantity;
         }
-        this.save({...this.cart.value, products: cartProducts});
+
+        this.cart.next({...this.cart, products: cartProducts});
     }
 
     /**
@@ -171,8 +82,15 @@ export class CartService {
      * @param productId
      * @param quantity
      */
-    public removeProduct(productId: number, quantity: number) {
+    public async removeProduct(productId: number, quantity: number) {
         let cartProducts = [...this.cart.value.products];
+
+        if (this.authService.getUser()) {
+            const productToRemove = {id: productId, quantity};
+            await this.updateCart({products: [productToRemove]}, 'remove');
+        } else {
+            this.updateSavedCart({products: cartProducts});
+        }
 
         const idxExists = cartProducts.findIndex(cp => cp.product.id === productId);
         if (idxExists !== -1) {
@@ -185,6 +103,67 @@ export class CartService {
                 ];
             }
         }
-        this.save({...this.cart.value, products: cartProducts});
+
+        this.cart.next({...this.cart, products: cartProducts});
+    }
+
+
+    /**
+     * fetch user cart
+     * @param id
+     * @private
+     */
+    private async fetchCartByUserId(id: number): Promise<ICart> {
+        this.loading.next(true);
+        try {
+            const cart = await this.cartApiService.fetchCartByUserId(id);
+            return cart ? cart : new Cart();
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        } finally {
+            this.loading.next(false);
+        }
+    }
+
+    /**
+     * update cart
+     * @param cart
+     * @param type
+     */
+    public async updateCart(cart: ICartRequest, type: string) {
+        if (!['add', 'remove', 'merge'].includes(type)) {
+            return;
+        }
+        this.loading.next(true);
+        try {
+            const isUpdated = await this.cartApiService.updateCart(cart, type);
+            if (!isUpdated) {
+                const msg = `Failed to update your cart, action: ${type}`;
+                this.notificationService.setErrorNotification(msg);
+            }
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        } finally {
+            this.loading.next(false);
+        }
+    }
+
+    /**
+     * load cart data from localstorage
+     */
+    public fetchSavedCart(): ICart {
+        try {
+            const savedCart = this.cartApiService.fetchSavedCart();
+            return savedCart || new Cart();
+        } catch (e) {
+            this.notificationService.setErrorNotification('Failed to load saved cart');
+        }
+    }
+
+    /**
+     * save data to local storage and to behavior subject
+     */
+    public updateSavedCart(cart: ICart) {
+        this.cartApiService.updateSavedCart(cart);
     }
 }

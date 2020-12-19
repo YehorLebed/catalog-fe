@@ -10,15 +10,22 @@ import {environment} from '../../../environments/environment';
     styleUrls: ['./cart-page.component.scss']
 })
 export class CartPageComponent implements OnInit {
-    private subscription: Subscription;
+    public loading = false;
     public cartProducts: ICartProduct[] = [];
+
+    private loadingSubscription: Subscription;
+    private cartProductsSubscription: Subscription;
 
     constructor(private cartService: CartService) {
     }
 
     ngOnInit(): void {
-        this.subscription = this.cartService.subscribeOnProductsChange( cp => {
+        this.cartProductsSubscription = this.cartService.subscribeOnProductsChange( cp => {
             this.cartProducts = cp;
+        });
+
+        this.loadingSubscription = this.cartService.loading.subscribe(loading => {
+            this.loading = loading;
         });
     }
 
@@ -54,6 +61,10 @@ export class CartPageComponent implements OnInit {
         this.cartService.removeProduct(cartProduct.product.id, cartProduct.quantity);
     }
 
+    /**
+     * prepare img srs
+     * @param image
+     */
     getImageSrc(image: string) {
         return environment.url + image;
     }

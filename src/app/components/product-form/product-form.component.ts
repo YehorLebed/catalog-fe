@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {IProduct} from '../../interfaces/product.interface';
+import {IProduct, IProductImage} from '../../interfaces/product.interface';
 import {ICategory} from '../../interfaces/category.interface';
+import {Product} from '../../classes/product.class';
 
 @Component({
     selector: 'app-product-form',
@@ -10,7 +11,8 @@ import {ICategory} from '../../interfaces/category.interface';
 })
 export class ProductFormComponent implements OnInit {
 
-    @Input('product') product: IProduct;
+    @Output('onSubmit') onSubmit = new EventEmitter<IProduct>();
+    @Input('product') product: IProduct = new Product();
     public productForm: FormGroup;
 
     constructor() {
@@ -40,14 +42,15 @@ export class ProductFormComponent implements OnInit {
             category: new FormControl(defaultValues.category, [
                 Validators.required
             ]),
-            image: new FormControl(defaultValues.image, [
-                Validators.required
-            ])
+            imageFile: new FormControl(null)
         });
     }
 
+    /**
+     * emit syntetic event
+     */
     handleSubmit() {
-        console.log(this.productForm.value);
+        this.onSubmit.emit({...this.product, ...this.productForm.value});
     }
 
     /**
@@ -83,7 +86,7 @@ export class ProductFormComponent implements OnInit {
      * @param image
      */
     onImageUpload(image: Blob | null) {
-        this.productForm.get('image').setValue(image);
+        this.productForm.get('imageFile').setValue(image);
     }
 
     /**

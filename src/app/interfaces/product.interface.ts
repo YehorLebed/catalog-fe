@@ -17,6 +17,7 @@ export interface IProduct {
     description: string;
     category?: ICategory;
     image: IProductImage;
+    imageFile?: Blob;
 };
 
 export interface IProductsResponse {

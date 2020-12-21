@@ -24,6 +24,24 @@ export class ValidationAlertComponent {
 
     /**
      * generate message about maxlength
+     * @param name
+     * @param max
+     */
+    max(name: string, max: number): string {
+        return `${name} max value is ${max}`;
+    }
+
+    /**
+     * generate message about maxlength
+     * @param name
+     * @param min
+     */
+    min(name: string, min: number): string {
+        return `${name} min value is ${min}`;
+    }
+
+    /**
+     * generate message about maxlength
      * @param {string} name field name
      * @param {number} maxlength maxlength
      * @return {string} message

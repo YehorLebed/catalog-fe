@@ -11,7 +11,9 @@
         <!--  fetched subcategories  -->
         <ng-template [ngIf]="isShouldRenderSubcategories()">
             <div class="dropdown-item" *ngFor="let category of subCategories">
-                <app-category [category]="category"></app-category>
+                <app-category
+                    (onClick)="onClick.emit($event)"
+                    [category]="category"></app-category>
             </div>
         </ng-template>
 

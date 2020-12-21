@@ -1,0 +1,6 @@
+<div class="category-preview">
+    {{selected ? selected.title : 'No category selected'}}
+</div>
+<div class="category-select">
+    <app-category (onClick)="handleCategorySelect($event)"></app-category>
+</div>

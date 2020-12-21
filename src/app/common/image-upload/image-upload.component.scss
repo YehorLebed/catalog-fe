@@ -1,0 +1,17 @@
+.message {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: #eee;
+    margin-bottom: 1rem;
+}
+
+.message.invalid {
+    background-color: var(--red);
+    color: var(--white);
+}
+
+.form-control {
+    height: auto;
+}

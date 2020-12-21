@@ -1,8 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ICategory} from '../../interfaces/category.interface';
 import {Category} from '../../classes/category.class';
 import {CategoryService} from '../../services/category.service';
-import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-category',
@@ -10,16 +9,15 @@ import {Router} from '@angular/router';
     styleUrls: ['./category.component.scss']
 })
 export class CategoryComponent implements OnInit {
+
+    @Output('onClick') onClick = new EventEmitter<ICategory>();
     @Input('category') category: ICategory;
     public subCategories: ICategory[];
 
     public loading = false;
     public show = false;
 
-    constructor(
-        private categoryService: CategoryService,
-        private router: Router
-    ) {
+    constructor(private categoryService: CategoryService) {
     }
 
     ngOnInit(): void {
@@ -38,7 +36,7 @@ export class CategoryComponent implements OnInit {
     public handleLinkClick(event: MouseEvent) {
         event.stopPropagation();
         if (this.category.id) {
-            this.router.navigateByUrl(`/categories/${this.category.id}`,);
+            this.onClick.emit(this.category);
         }
     }
 

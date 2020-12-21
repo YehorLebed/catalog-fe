@@ -28,6 +28,11 @@ import {FilterOrderComponent} from './components/filter-order/filter-order.compo
 import { FilterPriceComponent } from './components/filter-price/filter-price.component';
 import { FilterSearchComponent } from './components/filter-search/filter-search.component';
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
+import { ProductFormComponent } from './components/product-form/product-form.component';
+import { ImageUploadComponent } from './common/image-upload/image-upload.component';
+import { AdminManageProductPageComponent } from './pages/admin-manage-product-page/admin-manage-product-page.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { CategoryInputComponent } from './common/category-input/category-input.component';
 
 
 @NgModule({
@@ -56,6 +61,11 @@ import { CartPageComponent } from './pages/cart-page/cart-page.component';
         FilterPriceComponent,
         FilterSearchComponent,
         CartPageComponent,
+        ProductFormComponent,
+        ImageUploadComponent,
+        AdminManageProductPageComponent,
+        NotFoundPageComponent,
+        CategoryInputComponent,
     ],
     imports: [
         BrowserModule,

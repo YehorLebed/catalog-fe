@@ -38,6 +38,7 @@ export class CartService {
                 const user = this.authService.getUser();
                 if (this.cart.value.products.length !== 0) {
                     await this.updateCart(Cart.prepareRequestData(this.cart.value), 'merge');
+                    this.clearSavedCart();
                 }
                 this.cart.next(await this.fetchCartByUserId(user.id));
             }
@@ -165,5 +166,9 @@ export class CartService {
      */
     public updateSavedCart(cart: ICart) {
         this.cartApiService.updateSavedCart(cart);
+    }
+
+    public clearSavedCart() {
+        this.cartApiService.clearSavedCart();
     }
 }

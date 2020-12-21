@@ -73,8 +73,8 @@ export class CartApiService {
      */
     public fetchSavedCart(): ICart {
         const exists = localStorage.getItem('cart');
-        const products = exists ? JSON.parse(exists) : [];
-        return new Cart(null, null, products);
+        const data = exists ? JSON.parse(exists) : [];
+        return new Cart(null, null, data.products);
     }
 
     /**
@@ -83,5 +83,9 @@ export class CartApiService {
      */
     public updateSavedCart(cart: ICart) {
         localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    public clearSavedCart() {
+        localStorage.removeItem('cart');
     }
 }

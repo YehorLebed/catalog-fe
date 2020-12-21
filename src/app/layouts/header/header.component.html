@@ -22,40 +22,18 @@
         </div>
 
         <!--  render not authorized menu  -->
-        <ul *ngIf="!isLoggedIn()" class="ul-row text-white">
+        <ul class="ul-row text-white">
             <li>
                 <a type="button">
                     <app-shopping-cart></app-shopping-cart>
                 </a>
             </li>
             <li>
-                <button
-                    class="btn btn-dark"
-                    routerLink="/authentication"
-                >Login
+                <button *ngIf="!isLoggedIn()" class="btn btn-dark" routerLink="/authentication">
+                    Login
                 </button>
+                <button *ngIf="isLoggedIn()" class="btn btn-dark" (click)="logout()">Logout</button>
             </li>
         </ul>
-
-        <!--  render customer menu  -->
-        <ul *ngIf="isCustomer()" class="ul-row text-white">
-            <li>
-                <a type="button">
-                    <app-shopping-cart></app-shopping-cart>
-                </a>
-            </li>
-            <li>
-                <button class="btn btn-dark">Logout</button>
-            </li>
-        </ul>
-
-        <!--  render admin menu  -->
-        <ul *ngIf="isAdmin()" class="ul-row text-white">
-            <!--  ...  -->
-            <li>
-                <button class="btn btn-dark">Logout</button>
-            </li>
-        </ul>
-
     </div>
 </nav>

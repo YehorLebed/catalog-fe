@@ -65,6 +65,16 @@ export class AuthService {
     }
 
     /**
+     * login from saved token
+     */
+    public loginFromSavedToken(): void {
+        const savedToken = localStorage.getItem('token');
+        if (savedToken) {
+            this.token.next(savedToken);
+        }
+    }
+
+    /**
      * logout from account
      * @return  {void}
      */
@@ -74,19 +84,25 @@ export class AuthService {
 
     /**
      * get user from token
-     * @param   {string}  token  user token
      * @return  {IUser}
      */
     public getUser(): IUser | null {
-        return this.token.value
-            ? jwtDecode(this.token.value)
-            : null;
+        let user = null;
+        try {
+            user = this.token.value ? jwtDecode(this.token.value) : null;
+        } catch (e) {
+            this.clearAuthenticationData();
+            const msg = 'Failed to login: invalid authentication data provided';
+            this.notificationService.setErrorNotification(msg);
+        } finally {
+            return user;
+        }
     }
 
     /**
      * get authentication token
      */
-    public getToken():string |null {
+    public getToken(): string | null {
         return this.token.value;
     }
 

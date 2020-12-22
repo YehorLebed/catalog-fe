@@ -34,7 +34,7 @@ export class ProductDetailPage implements OnInit, OnDestroy {
     }
 
     /**
-     * add product to cart
+     * add category to cart
      */
     public handleAddToCart() {
         this.cartService.addProduct(this.product, 1);
@@ -45,8 +45,8 @@ export class ProductDetailPage implements OnInit, OnDestroy {
     }
 
     /**
-     * fetch product from server by id
-     * @param id product id
+     * fetch category from server by id
+     * @param id category id
      * @private
      */
     private fetchProduct(id: number): Promise<IProduct> {
@@ -64,7 +64,7 @@ export class ProductDetailPage implements OnInit, OnDestroy {
     private subscribe() {
         this.routeSubscription = this.activatedRoute.params.subscribe(async params => {
             const productFromRoute = this.getProductFromRoute();
-            const paramsProductId = params['productId'];
+            const paramsProductId = params['categoryId'];
 
             if (paramsProductId != this.paramsProductId) {
                 this.paramsProductId = paramsProductId;

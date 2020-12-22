@@ -28,4 +28,34 @@ export class CategoryService {
             this.errorService.processErrorResponse(error);
         }
     }
+
+    /**
+     * get category by id
+     * @param id
+     */
+    public async getCategoryById(id: number): Promise<ICategory> {
+        try {
+            return await this.categoryApi.getCategoryById(id);
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        }
+    }
+
+    async create(category: ICategory) {
+        try {
+            return await this.categoryApi.create(category);
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        }
+    }
+
+
+    async update(id: number, category: ICategory) {
+        category.id = id;
+        try {
+            return await this.categoryApi.update(category);
+        } catch (error) {
+            this.errorService.processErrorResponse(error);
+        }
+    }
 }

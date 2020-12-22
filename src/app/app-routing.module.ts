@@ -16,12 +16,12 @@ const routes: Routes = [
     {path: 'newest', pathMatch: 'full', component: RecentlyAddedPageComponent,},
     {path: 'popular', pathMatch: 'full', component: PopularProductsPageComponent,},
     {path: 'categories/:categoryId', pathMatch: 'full', component: ProductCategoryPage,},
-    {path: 'products/:productId', pathMatch: 'full', component: ProductDetailPage,},
+    {path: 'products/:categoryId', pathMatch: 'full', component: ProductDetailPage,},
     {path: 'cart', pathMatch: 'full', component: CartPageComponent},
     {
         path: 'admin', children: [
             {path: 'newProduct', component: AdminManageProductPageComponent, data: {type: 'create'}},
-            {path: 'products/:productId', component: AdminManageProductPageComponent, data: {type: 'update'}}
+            {path: 'products/:categoryId', component: AdminManageProductPageComponent, data: {type: 'update'}}
         ]
     },
     {path: '**', component: NotFoundPageComponent}

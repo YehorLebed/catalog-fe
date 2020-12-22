@@ -23,7 +23,7 @@ export class AdminManageProductPageComponent implements OnInit {
     ngOnInit(): void {
         this.activatedRoute.params.subscribe(async params => {
             const productFromRoute = this.getProductFromRoute();
-            const productId = params['productId'];
+            const productId = params['categoryId'];
 
             if (productId != this.productId) {
                 this.productId = productId;
@@ -37,7 +37,7 @@ export class AdminManageProductPageComponent implements OnInit {
     }
 
     /**
-     * fetch product by id
+     * fetch category by id
      * @param id
      */
     public fetchProduct(id: number): Promise<IProduct> {
@@ -49,7 +49,7 @@ export class AdminManageProductPageComponent implements OnInit {
     }
 
     /**
-     * get product from history state
+     * get category from history state
      */
     public getProductFromRoute(): IProduct {
         return history.state.productToUpdate || null;

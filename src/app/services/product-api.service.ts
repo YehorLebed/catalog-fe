@@ -65,7 +65,7 @@ export class ProductApiService {
     }
 
     /**
-     * get product by id params
+     * get category by id params
      * @param id
      */
     public fetchProductById(id: number) {
@@ -80,7 +80,7 @@ export class ProductApiService {
     }
 
     /**
-     * update product
+     * update category
      * @param productData
      */
     async updateProduct(productData: IProduct): Promise<IProduct> {
@@ -90,7 +90,7 @@ export class ProductApiService {
     }
 
     /**
-     * set product
+     * set category
      * @param productId
      * @param image
      */

@@ -38,7 +38,7 @@ export class CartPageComponent implements OnInit {
     }
 
     /**
-     * increase product quatity by 1
+     * increase category quatity by 1
      * @param cartProduct
      */
     onIncrease(cartProduct: ICartProduct) {
@@ -46,7 +46,7 @@ export class CartPageComponent implements OnInit {
     }
 
     /**
-     * decrease product quantity by 1
+     * decrease category quantity by 1
      * @param cartProduct
      */
     onDecrease(cartProduct: ICartProduct) {
@@ -54,7 +54,7 @@ export class CartPageComponent implements OnInit {
     }
 
     /**
-     * delete product from cart
+     * delete category from cart
      * @param cartProduct
      */
     onDelete(cartProduct: ICartProduct) {

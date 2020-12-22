@@ -1,11 +1,11 @@
-<div class="product-manage">
-    <div class="product-manage__inner shadow">
+<div class="category-manage">
+    <div class="category-manage__inner shadow">
         <h3 class="title">Manage category</h3>
-        <app-product-form
+        <app-category-form
             *ngIf="!loading"
             (onSubmit)="handleSubmit($event)"
-            [product]="product"
-        ></app-product-form>
+            [category]="category"
+        ></app-category-form>
 
         <app-loader *ngIf="loading"></app-loader>
     </div>

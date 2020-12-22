@@ -18,7 +18,7 @@ export class ProductService {
     }
 
     /**
-     * create product
+     * create category
      * @param product
      */
     public async create(product: IProduct): Promise<IProduct> {
@@ -35,7 +35,7 @@ export class ProductService {
     }
 
     /**
-     * create product
+     * create category
      * @param product
      * @private
      */
@@ -45,7 +45,7 @@ export class ProductService {
     }
 
     /**
-     * update product
+     * update category
      * @param prev
      * @param next
      */
@@ -70,7 +70,7 @@ export class ProductService {
     }
 
     /**
-     * update product instance
+     * update category instance
      * @param product
      * @private
      */
@@ -80,7 +80,7 @@ export class ProductService {
     }
 
     /**
-     * set product image
+     * set category image
      * @param productId
      * @param image
      * @private
@@ -103,7 +103,7 @@ export class ProductService {
     }
 
     /**
-     * fetch product from server
+     * fetch category from server
      * @param id
      */
     public async fetchProductById(id: number): Promise<IProduct> {

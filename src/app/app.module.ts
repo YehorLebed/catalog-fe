@@ -33,6 +33,8 @@ import { ImageUploadComponent } from './common/image-upload/image-upload.compone
 import { AdminManageProductPageComponent } from './pages/admin-manage-product-page/admin-manage-product-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { CategoryInputComponent } from './common/category-input/category-input.component';
+import { CategoryFormComponent } from './components/category-form/category-form.component';
+import { AdminManageCategoryComponent } from './pages/admin-manage-category/admin-manage-category.component';
 
 
 @NgModule({
@@ -66,6 +68,8 @@ import { CategoryInputComponent } from './common/category-input/category-input.c
         AdminManageProductPageComponent,
         NotFoundPageComponent,
         CategoryInputComponent,
+        CategoryFormComponent,
+        AdminManageCategoryComponent,
     ],
     imports: [
         BrowserModule,

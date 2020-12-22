@@ -54,7 +54,7 @@ export class CartService {
     }
 
     /**
-     * add product to cart
+     * add category to cart
      * @param product
      * @param quantity
      */
@@ -79,7 +79,7 @@ export class CartService {
     }
 
     /**
-     * remove product from cart
+     * remove category from cart
      * @param productId
      * @param quantity
      */
@@ -97,7 +97,7 @@ export class CartService {
         if (idxExists !== -1) {
             cartProducts[idxExists].quantity -= quantity;
             if (cartProducts[idxExists].quantity < 1) {
-                // remove product from cart
+                // remove category from cart
                 cartProducts = [
                     ...cartProducts.slice(0, idxExists),
                     ...cartProducts.slice(idxExists + 1)

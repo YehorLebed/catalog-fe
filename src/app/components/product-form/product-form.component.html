@@ -100,7 +100,7 @@
             <div class="mb-3">
                 <button
                     type="submit"
-                    [disabled]="productForm.pristine || productForm.invalid"
+                    [disabled]="!productForm.dirty || productForm.invalid"
                     class="btn btn-primary"
                     (click)="handleSubmit()"
                 >Submit

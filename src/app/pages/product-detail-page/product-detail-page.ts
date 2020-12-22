@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {IProduct} from '../../interfaces/product.interface';
 import {Subscription} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProductService} from '../../services/product.service';
 import {CartService} from '../../services/cart.service';
 import {environment} from '../../../environments/environment';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
     selector: 'app-single-product-page',
@@ -22,8 +23,14 @@ export class ProductDetailPage implements OnInit, OnDestroy {
     constructor(
         private activatedRoute: ActivatedRoute,
         private productService: ProductService,
+        private authService: AuthService,
         private cartService: CartService,
+        private router: Router
     ) {
+    }
+
+    public get isAdmin() {
+        return this.authService.isRole('admin');
     }
 
     /**
@@ -34,25 +41,7 @@ export class ProductDetailPage implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.routeSubscription = this.activatedRoute.params.subscribe(params => {
-            if (params.productId && params.productId !== this.paramsProductId) {
-                this.paramsProductId = params.productId;
-                this.loadProduct();
-            }
-        });
-    }
-
-    /**
-     * load product data (using history state or fetch from the server)
-     * @private
-     */
-    private loadProduct() {
-        const {product} = history.state;
-        if (product && this.paramsProductId === product.id) {
-            this.product = product;
-        } else {
-            this.fetchProduct(this.paramsProductId);
-        }
+        this.subscribe();
     }
 
     /**
@@ -60,11 +49,11 @@ export class ProductDetailPage implements OnInit, OnDestroy {
      * @param id product id
      * @private
      */
-    private fetchProduct(id: number) {
+    private fetchProduct(id: number): Promise<IProduct> {
         this.loading = true;
-        this.productService.fetchProductById(id).then(product => {
-            this.product = product;
+        return this.productService.fetchProductById(id).then(product => {
             this.loading = false;
+            return product;
         });
     }
 
@@ -73,12 +62,23 @@ export class ProductDetailPage implements OnInit, OnDestroy {
      * @private
      */
     private subscribe() {
-        this.routeSubscription = this.activatedRoute.params.subscribe(params => {
-            if (params.productId && params.productId !== this.paramsProductId) {
-                this.paramsProductId = params.productId;
-                this.fetchProduct(this.paramsProductId);
+        this.routeSubscription = this.activatedRoute.params.subscribe(async params => {
+            const productFromRoute = this.getProductFromRoute();
+            const paramsProductId = params['productId'];
+
+            if (paramsProductId != this.paramsProductId) {
+                this.paramsProductId = paramsProductId;
+            }
+
+            if (!this.product || this.paramsProductId != this.product.id) {
+                this.product = (productFromRoute && productFromRoute.id == this.paramsProductId)
+                    ? productFromRoute : await this.fetchProduct(this.paramsProductId);
             }
         });
+    }
+
+    public getProductFromRoute(): IProduct {
+        return history.state.productToShow || null;
     }
 
     public getImageSrc() {
@@ -89,4 +89,8 @@ export class ProductDetailPage implements OnInit, OnDestroy {
         this.routeSubscription.unsubscribe();
     }
 
+    handleNavigateManage() {
+        const extras = {state: {productToUpdate: this.product}};
+        this.router.navigateByUrl(`/admin/products/${this.product.id}`, extras);
+    }
 }

@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {environment} from '../../../environments/environment';
 
 @Component({
     selector: 'app-image-upload',
@@ -26,8 +27,16 @@ export class ImageUploadComponent {
         this.onUpload.emit(this.file);
     }
 
+    getImageAlt() {
+        return this.file ? this.file.name : 'default';
+    }
+
+    getImageSrc() {
+        return this.file ? this.imageSrc : environment.url + this.imageSrc;
+    }
+
     private previewImage(file: File) {
-        if(!file || !(file instanceof Blob)) {
+        if (!file || !(file instanceof Blob)) {
             return;
         }
 

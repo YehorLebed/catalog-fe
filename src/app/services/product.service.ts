@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {ErrorService} from './error.service';
 import {ProductApiService} from './product-api.service';
 import {IProduct, IProductImage, IProductQueryParameters} from '../interfaces/product.interface';
+import {Product} from '../classes/product.class';
+import {NotificationService} from './notification.service';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +13,7 @@ export class ProductService {
     constructor(
         private errorService: ErrorService,
         private productApi: ProductApiService,
+        private notificationService: NotificationService,
     ) {
     }
 
@@ -37,8 +40,43 @@ export class ProductService {
      * @private
      */
     private async createProduct(product: IProduct): Promise<IProduct> {
-        const productData = {...product, image: null};
+        const {image, ...productData} = product;
         return await this.productApi.createProduct(productData);
+    }
+
+    /**
+     * update product
+     * @param prev
+     * @param next
+     */
+    public async update(prev: IProduct, next: IProduct): Promise<IProduct> {
+
+        if (!next.imageFile && Product.compare(prev, next)) {
+            const msg = 'Failed to update: You haven\'t changed any property';
+            this.notificationService.setInfoNotification(msg);
+            return next;
+        }
+
+        if (next.imageFile) {
+            await this.setProductImage(prev.id, next.imageFile);
+        }
+
+        if (!Product.compare(prev, next)) {
+            next.id = prev.id;
+            await this.updateProduct(next);
+        }
+
+        return {...prev, ...next};
+    }
+
+    /**
+     * update product instance
+     * @param product
+     * @private
+     */
+    private async updateProduct(product: IProduct): Promise<IProduct> {
+        const {imageFile, ...productData} = product;
+        return await this.productApi.updateProduct(productData);
     }
 
     /**
@@ -47,7 +85,7 @@ export class ProductService {
      * @param image
      * @private
      */
-    private async setProductImage(productId: number, image: Blob): Promise<IProductImage> {
+    public async setProductImage(productId: number, image: Blob): Promise<IProductImage> {
         return await this.productApi.setProductImage(productId, image);
     }
 

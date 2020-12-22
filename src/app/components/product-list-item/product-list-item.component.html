@@ -8,10 +8,17 @@
             <div class="card-bottom">
                 <div class="card-price">{{product.price|currency}}</div>
                 <button
+                    *ngIf="!isAdmin"
                     class="btn btn-primary"
                     (click)="handleAddProductToCart(product)"
                 >
                     <span class="material-icons">shopping_cart</span>
+                </button>
+                <button *ngIf="isAdmin"
+                        class="btn btn-success"
+                        (click)="handleNavigateManage()"
+                >
+                   <span class="material-icons">edit</span>
                 </button>
             </div>
         </div>

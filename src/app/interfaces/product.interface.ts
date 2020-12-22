@@ -16,7 +16,7 @@ export interface IProduct {
     createdAt: number
     description: string;
     category?: ICategory;
-    image: IProductImage;
+    image?: IProductImage;
     imageFile?: Blob;
 };
 

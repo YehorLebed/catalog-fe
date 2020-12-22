@@ -20,7 +20,8 @@ const routes: Routes = [
     {path: 'cart', pathMatch: 'full', component: CartPageComponent},
     {
         path: 'admin', children: [
-            {path: 'newProduct', component: AdminManageProductPageComponent}
+            {path: 'newProduct', component: AdminManageProductPageComponent, data: {type: 'create'}},
+            {path: 'products/:productId', component: AdminManageProductPageComponent, data: {type: 'update'}}
         ]
     },
     {path: '**', component: NotFoundPageComponent}

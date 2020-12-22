@@ -33,6 +33,10 @@ export class ProductApiService {
         return `${environment.url}/products/${id}`;
     }
 
+    private prepareUrlUpdateById(id: number) {
+        return `${environment.url}/admin/products/${id}`;
+    }
+
     private prepareUrlSetImage(id: number) {
         return `${environment.url}/admin/products/${id}/images`;
     }
@@ -73,6 +77,16 @@ export class ProductApiService {
         const headers = this.prepareHeaders();
         const url = this.prepareUrlPost();
         return this.httpClient.post<IProduct>(url, productData, {headers}).toPromise();
+    }
+
+    /**
+     * update product
+     * @param productData
+     */
+    async updateProduct(productData: IProduct): Promise<IProduct> {
+        const headers = this.prepareHeaders();
+        const url = this.prepareUrlUpdateById(productData.id);
+        return this.httpClient.put<IProduct>(url, productData, {headers}).toPromise();
     }
 
     /**

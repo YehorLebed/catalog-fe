@@ -1,5 +1,9 @@
 <div *ngIf="imageSrc else message" class="image text-center">
-    <img *ngIf="!loading" [src]="imageSrc" class="img-thumbnail" [alt]="file.name">
+    <img *ngIf="!loading"
+         [src]="getImageSrc()"
+         [alt]="getImageAlt()"
+         class="img-thumbnail"
+    >
     <app-loader *ngIf="loading"></app-loader>
 </div>
 
@@ -14,6 +18,6 @@
            type="file"
            accept='image/*'
            class="form-control"
-           [class.is-invalid]="invalidFile"
+           [class.is-invalid]="invalidType"
            (change)="handleUpload(imageInput.files[0])">
 </div>

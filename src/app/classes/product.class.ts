@@ -22,4 +22,33 @@ export class Product implements IProduct {
             {name: 'By date desc', value: 6, field: 'created_at', isDesc: false},
         ];
     }
+
+    /**
+     * getter for parameters
+     */
+    static get parametersToCompare(): string[] {
+        return ['title', 'price', 'description', 'isPromo', 'category'];
+    }
+
+    /**
+     * compare products
+     * @param prev
+     * @param next
+     */
+    static compare(prev: IProduct, next: IProduct): boolean {
+        let isEqual = true;
+        Product.parametersToCompare.forEach(parameter => {
+            if (parameter === 'category') {
+                if (prev[parameter].id != next[parameter].id) {
+                    isEqual = false;
+                }
+            }
+            else {
+                if (prev[parameter] != next[parameter]) {
+                    isEqual = false;
+                }
+            }
+        });
+        return isEqual;
+    }
 }

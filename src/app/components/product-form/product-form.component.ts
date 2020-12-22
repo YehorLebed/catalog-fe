@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
+import {Component, Input, OnInit, EventEmitter, Output, OnChanges} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {IProduct, IProductImage} from '../../interfaces/product.interface';
 import {ICategory} from '../../interfaces/category.interface';
@@ -50,7 +50,7 @@ export class ProductFormComponent implements OnInit {
      * emit syntetic event
      */
     handleSubmit() {
-        this.onSubmit.emit({...this.product, ...this.productForm.value});
+        this.onSubmit.emit(this.productForm.value);
     }
 
     /**
@@ -60,10 +60,9 @@ export class ProductFormComponent implements OnInit {
         return {
             title: this.product ? this.product.title : '',
             description: this.product ? this.product.description : '',
-            price: this.product ? this.product.price : '',
+            price: this.product ? +this.product.price : '',
             isPromo: this.product ? this.product.isPromo : false,
             category: this.product && this.product.category || null,
-            image: this.product && this.product.image || null
         };
     }
 
@@ -71,7 +70,7 @@ export class ProductFormComponent implements OnInit {
      * get image src as preview
      */
     getImageSrc() {
-        return this.product && this.product.image.original || '';
+        return this.product && this.product.image && this.product.image.original || '';
     }
 
     /**
@@ -87,6 +86,7 @@ export class ProductFormComponent implements OnInit {
      */
     onImageUpload(image: Blob | null) {
         this.productForm.get('imageFile').setValue(image);
+        this.productForm.markAsDirty();
     }
 
     /**
@@ -95,6 +95,7 @@ export class ProductFormComponent implements OnInit {
      */
     onCategorySelect(category: ICategory) {
         this.productForm.get('category').setValue(category);
+        this.productForm.markAsDirty();
     }
 
     get title() {
